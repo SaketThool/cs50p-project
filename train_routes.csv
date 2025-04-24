@@ -1,0 +1,3 @@
+train_No,train_Name,dep_station,arri_station,dep_time,arri_time,total_seats,days_running
+12262,CSMT DURONTO EX,NGP,CSMT,20:55,08:15,72,mon/tue/wed/fri
+17412,Mahalaxmi Express,PUNE,TNA,03:30,06:12,144,sun/mon/tue/wed/thu/fri/sat
