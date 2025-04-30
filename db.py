@@ -1,5 +1,6 @@
 import sqlite3
 import csv
+from train import TrainRoute
 
 def db_setup():
 
@@ -20,7 +21,7 @@ def db_setup():
             sys.exit("File does not exist")
 
 
-    cur.execute("CREATE TABLE IF NOT EXISTS routes(number NUMBER , name TEXT , dep_station TEXT , arri_station TEXT , dep_time TEXT , arri_time TEXT , total_seats NUMBER , days_running TEXT )")
+    cur.execute("CREATE TABLE IF NOT EXISTS routes(id INTEGER PRIMARY KEY AUTOINCREMENT , number NUMBER , name TEXT , dep_station TEXT , arri_station TEXT , dep_time TEXT , arri_time TEXT , total_seats NUMBER , days_running TEXT )")
     no_of_stations = cur.execute("SELECT COUNT(*) FROM routes").fetchone()[0]
     if no_of_stations == 0:
         try:
@@ -32,3 +33,16 @@ def db_setup():
                 cur.connection.commit()
         except FileNotFoundError:
             sys.exit("File does not exist")
+    return con
+
+def get_all_routes(con):
+
+    cur = con.cursor()
+
+    rows = cur.execute("SELECT * FROM routes").fetchall()
+
+    trains = []
+    for row in rows:
+        train = TrainRoute(row[0] , row[1]  , row[2] , row[3] , row[4] , row[5] , row[6] , row[7] , row[8])
+        trains.append(train)
+    return trains

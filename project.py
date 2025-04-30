@@ -1,8 +1,10 @@
 import pyfiglet
-from db import db_setup
+from db import db_setup, get_all_routes
+from pprint import pprint
+
 def main():
 
-    db_setup()
+    con = db_setup()
 
     figlet = pyfiglet.Figlet(font='slant')
     art = figlet.renderText("WELCOME")
@@ -16,12 +18,21 @@ def main():
         match (option.lower()):
             case "1":
                 print("Welcome to our website")
+                book_a_train(con)
                 break
+
             case "2":
                 print("Thank for visiting our website")
                 break
 
+def book_a_train(con):
+    routes = get_all_routes(con)
+    
+    print("Here are all the departure stations available")
 
-
+    departure_stations = []
+    for route in routes:
+        departure_stations.append(route.dep_station)
+    pprint(departure_stations)
 if __name__ == "__main__":
     main()
