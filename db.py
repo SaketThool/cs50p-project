@@ -2,6 +2,7 @@ import sqlite3
 import csv
 from train import TrainRoute
 
+
 def db_setup():
 
     con = sqlite3.connect("train.db")
@@ -34,6 +35,7 @@ def db_setup():
         except FileNotFoundError:
             sys.exit("File does not exist")
     return con
+
 
 def get_all_routes(con):
 
