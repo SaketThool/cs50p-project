@@ -1,5 +1,6 @@
 import pyfiglet
 import sys
+import re
 from db import db_setup, get_all_routes
 from pprint import pprint
 from datetime import date
@@ -109,61 +110,62 @@ def book_a_train(con):
 
 
     # NAME
-    username = []
+    
     while True:
     
         try:
-            passanger_name = int(input("Enter your NAME: "))
-            if not (passanger_name >= 0 and passanger_name < len(username)):
-            #if chosen_route_number < 0 or chosen_route_number >= len(available_routes):
+            passanger_name = input("Enter your NAME: ").strip()
+            if len(passanger_name) == 0 :
+            
                 raise ValueError
             break
         except ValueError:
             print("Invalid choice")
             continue
-    print(passanger_name)
+    
 
     #AGE
     while True:
     
+
         try:
-            chosen_route_number = int(input("Enter ROW number to book your train: "))
-            if not (chosen_route_number >= 0 and chosen_route_number < len(available_routes)):
-            #if chosen_route_number < 0 or chosen_route_number >= len(available_routes):
+            passanger_age = int(input("Enter your AGE: "))
+            if passanger_age <= 3:
+           
                 raise ValueError
             break
         except ValueError:
-            print("Invalid choice")
+            print("Invalid age")
             continue
-    print(chosen_route_number)
+    
 
     #GENDER
     while True:
     
         try:
-            chosen_route_number = int(input("Enter ROW number to book your train: "))
-            if not (chosen_route_number >= 0 and chosen_route_number < len(available_routes)):
-            #if chosen_route_number < 0 or chosen_route_number >= len(available_routes):
+            passanger_gender = input("Enter your GENDER[M/F/O]: ").strip()
+            if passanger_gender not in ["M", "F", "O"]:
+            
                 raise ValueError
             break
         except ValueError:
-            print("Invalid choice")
+            print("Invalid Gender")
             continue
-    print(chosen_route_number)
+    
 
     #PHONE NUMBER
     while True:
     
         try:
-            chosen_route_number = int(input("Enter ROW number to book your train: "))
-            if not (chosen_route_number >= 0 and chosen_route_number < len(available_routes)):
-            #if chosen_route_number < 0 or chosen_route_number >= len(available_routes):
+            passanger_phone_number = input("Enter your PHONE NUMBER: ").strip()
+            if not re.match(r"[7-9][0-9]{9}"):
+            
                 raise ValueError
             break
         except ValueError:
-            print("Invalid choice")
+            print("Invalid Phone Number")
             continue
-    print(chosen_route_number)
+    
 
 
 
