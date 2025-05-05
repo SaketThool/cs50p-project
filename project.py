@@ -6,6 +6,8 @@ from pprint import pprint
 from datetime import date
 
 
+TEST = False
+
 WEEKDAYS = {0:"mon",
             1:"tue",
             2:"wed",
@@ -17,6 +19,10 @@ WEEKDAYS = {0:"mon",
 
 
 def main():
+
+    global TEST
+    if len(sys.argv) == 2 and sys.argv[1]== "-t":
+        TEST = True
 
     con = db_setup()
 
@@ -39,6 +45,131 @@ def main():
                 print("Thank for visiting our website")
                 break
 
+
+def choose_dep_station(departure_stations):
+    while True:
+        chosen_dep_station = input("Enter the DEPARTURE STATION: ").strip()
+        if chosen_dep_station in departure_stations :
+            break
+        else:
+            print("Invalid Station code")
+    
+    return chosen_dep_station
+
+
+def choose_arri_station(arrival_stations):
+    while True:
+        chosen_arri_station = input("Enter the ARRIVAL STATION: ").strip()
+        if chosen_arri_station in arrival_stations:
+            break
+        else:
+            print("Invalid Station code")
+        
+    return chosen_arri_station
+
+
+def choose_date():
+    while True:
+        chosen_date_string = input("Enter your DATE for journey(YYYY-MM-DD): ").strip()
+
+        try:
+            chosen_date = date.fromisoformat(chosen_date_string)
+            break
+        except ValueError:
+            print("Invalid date")
+            continue
+
+    return chosen_date
+
+
+def choose_route_number(available_routes):
+    while True:
+    
+        try:
+            chosen_route_number = int(input("Enter ROW number to book your train: "))
+            if not (chosen_route_number >= 0 and chosen_route_number < len(available_routes)):
+            #if chosen_route_number < 0 or chosen_route_number >= len(available_routes):
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid choice")
+            continue
+
+    return chosen_route_number
+
+
+def choose_name():
+
+    # NAME
+    while True:
+    
+        try:
+            passanger_name = input("Enter your NAME: ").strip()
+            if len(passanger_name) == 0 :
+            
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid choice")
+            continue
+
+    return passanger_name
+
+
+def choose_age():
+
+    #AGE
+    while True:
+    
+        try:
+            passanger_age = int(input("Enter your AGE: "))
+            if passanger_age <= 3:
+           
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid age")
+            continue
+
+        return passanger_age
+
+
+def choose_gender():
+
+     #GENDER
+    while True:
+    
+        try:
+            passanger_gender = input("Enter your GENDER[M/F/O]: ").strip()
+            if passanger_gender not in ["M", "F", "O"]:
+            
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid Gender")
+            continue
+
+    return passanger_gender
+
+
+def choose_phone_number():
+
+    #PHONE NUMBER
+    while True:
+    
+        try:
+            passanger_phone_number = input("Enter your PHONE NUMBER: ").strip()
+            if not re.match(r"[7-9][0-9]{9}", passanger_phone_number):
+            
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid Phone Number")
+            continue
+
+    return passanger_phone_number
+
+
 def book_a_train(con):
     routes = get_all_routes(con)
     
@@ -50,12 +181,7 @@ def book_a_train(con):
     departure_stations = sorted(departure_stations)
     pprint(departure_stations) # TODO proper print
 
-    while True:
-        chosen_dep_station = input("Enter the DEPARTURE STATION: ").strip()
-        if chosen_dep_station in departure_stations :
-            break
-        else:
-            print("Invalid Station code")
+    chosen_dep_station = choose_dep_station(departure_stations)
 
     arrival_stations = set()
     for route in routes:
@@ -64,22 +190,9 @@ def book_a_train(con):
     arri_stations = sorted(arrival_stations)
     pprint(arrival_stations) # TODO proper print , print full station name , use survey package
 
-    while True:
-        chosen_arri_station = input("Enter the ARRIVAL STATION: ").strip()
-        if chosen_arri_station in arrival_stations :
-            break
-        else:
-            print("Invalid Station code")
-
-    while True:
-        chosen_date_string = input("Enter your DATE for journey(YYYY-MM-DD): ").strip()
-
-        try:
-            chosen_date = date.fromisoformat(chosen_date_string)
-            break
-        except ValueError:
-            print("Invalid date")
-            continue
+    chosen_arri_station = choose_arri_station(arrival_stations)
+    
+    chosen_date = choose_date()
 
     chosen_weekday = WEEKDAYS[chosen_date.weekday()]
 
@@ -94,79 +207,15 @@ def book_a_train(con):
     for i,route in enumerate(available_routes):
         print(f"{i}: {route}") # TODO print number of seats free
 
-    while True:
-    
-        try:
-            chosen_route_number = int(input("Enter ROW number to book your train: "))
-            if not (chosen_route_number >= 0 and chosen_route_number < len(available_routes)):
-            #if chosen_route_number < 0 or chosen_route_number >= len(available_routes):
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid choice")
-            continue
+    chosen_route_number = choose_route_number(available_routes)
+
     print(chosen_route_number)## TODO name, age, gender, ph. number
     chosen_route = available_routes[chosen_route_number]
 
-
-    # NAME
-    
-    while True:
-    
-        try:
-            passanger_name = input("Enter your NAME: ").strip()
-            if len(passanger_name) == 0 :
-            
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid choice")
-            continue
-    
-
-    #AGE
-    while True:
-    
-
-        try:
-            passanger_age = int(input("Enter your AGE: "))
-            if passanger_age <= 3:
-           
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid age")
-            continue
-    
-
-    #GENDER
-    while True:
-    
-        try:
-            passanger_gender = input("Enter your GENDER[M/F/O]: ").strip()
-            if passanger_gender not in ["M", "F", "O"]:
-            
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid Gender")
-            continue
-    
-
-    #PHONE NUMBER
-    while True:
-    
-        try:
-            passanger_phone_number = input("Enter your PHONE NUMBER: ").strip()
-            if not re.match(r"[7-9][0-9]{9}"):
-            
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid Phone Number")
-            continue
-    
-
+    passanger_name = choose_name()
+    passanger_age = choose_age()
+    passanger_gender = choose_gender()
+    passanger_phone_number = choose_phone_number()
 
 
 if __name__ == "__main__":
