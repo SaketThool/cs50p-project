@@ -16,13 +16,17 @@ def db_setup():
                 reader = csv.DictReader(csvfile)
 
                 for row in reader:
-                    cur.execute("INSERT INTO stations (code, name) VALUES(?, ?)", (row["station_Code"], row["station_Name"]))
+                    cur.execute(
+                        "INSERT INTO stations (code, name) VALUES(?, ?)",
+                        (row["station_Code"], row["station_Name"]),
+                    )
                 cur.connection.commit()
         except FileNotFoundError:
             sys.exit("File does not exist")
 
-
-    cur.execute("CREATE TABLE IF NOT EXISTS routes(id INTEGER PRIMARY KEY AUTOINCREMENT , number NUMBER , name TEXT , dep_station TEXT , arri_station TEXT , dep_time TEXT , arri_time TEXT , total_seats NUMBER , days_running TEXT )")
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS routes(id INTEGER PRIMARY KEY AUTOINCREMENT , number NUMBER , name TEXT , dep_station TEXT , arri_station TEXT , dep_time TEXT , arri_time TEXT , total_seats NUMBER , days_running TEXT )"
+    )
     no_of_stations = cur.execute("SELECT COUNT(*) FROM routes").fetchone()[0]
     if no_of_stations == 0:
         try:
@@ -30,7 +34,19 @@ def db_setup():
                 reader = csv.DictReader(csvfile)
 
                 for row in reader:
-                    cur.execute("INSERT INTO routes (number, name, dep_station, arri_station, dep_time, arri_time, total_seats, days_running) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", (row["train_No"], row["train_Name"], row["dep_station"], row["arri_station"], row["dep_time"], row["arri_time"], row["total_seats"], row["days_running"]))
+                    cur.execute(
+                        "INSERT INTO routes (number, name, dep_station, arri_station, dep_time, arri_time, total_seats, days_running) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                        (
+                            row["train_No"],
+                            row["train_Name"],
+                            row["dep_station"],
+                            row["arri_station"],
+                            row["dep_time"],
+                            row["arri_time"],
+                            row["total_seats"],
+                            row["days_running"],
+                        ),
+                    )
                 cur.connection.commit()
         except FileNotFoundError:
             sys.exit("File does not exist")
@@ -45,6 +61,8 @@ def get_all_routes(con):
 
     trains = []
     for row in rows:
-        train = TrainRoute(row[0] , row[1]  , row[2] , row[3] , row[4] , row[5] , row[6] , row[7] , row[8])
+        train = TrainRoute(
+            row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]
+        )
         trains.append(train)
     return trains
