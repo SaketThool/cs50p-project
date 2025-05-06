@@ -50,6 +50,10 @@ def db_setup():
                 cur.connection.commit()
         except FileNotFoundError:
             sys.exit("File does not exist")
+
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS bookings(pnr INTEGER PRIMARY KEY AUTOINCREMENT , route_id INTEGER , name TEXT , age INTEGER , gender TEXT , phone_number TEXT, FOREIGN KEY (route_id) REFERENCES routes(id))"
+    )
     return con
 
 
@@ -66,3 +70,22 @@ def get_all_routes(con):
         )
         trains.append(train)
     return trains
+
+
+def save_booking(con, booking):
+
+    cur = con.cursor()
+
+    
+    cur.execute(
+        "INSERT INTO bookings (route_id, name, age, gender, phone_number) VALUES(?, ?, ?, ?, ?)",
+        (
+            booking.route.id,
+            booking.name,
+            booking.age,
+            booking.gender,
+            booking.phone_number
+        ),
+    )
+    cur.connection.commit()
+       

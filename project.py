@@ -1,10 +1,10 @@
 import pyfiglet
 import sys
 import re
-from db import db_setup, get_all_routes
+from db import db_setup, get_all_routes, save_booking
 from pprint import pprint
 from datetime import date
-
+from booking import Booking
 
 TEST = False
 
@@ -187,13 +187,9 @@ def book_a_train(con):
                 available_routes.append(route)
         if len(available_routes) == 0:
             sys.exit("Trains are not available")
-        # TODO to print it nicely like pizza.py , print all information of train
-        for i, route in enumerate(available_routes):
-            print(f"{i}: {route}")  # TODO print number of seats free
 
-        chosen_route_number = choose_route_number(available_routes)
+        chosen_route_number = 0
 
-        print(chosen_route_number)  ## TODO name, age, gender, ph. number
         chosen_route = available_routes[chosen_route_number]
 
         passanger_name = "saket"
@@ -251,6 +247,16 @@ def book_a_train(con):
         passanger_age = choose_age()
         passanger_gender = choose_gender()
         passanger_phone_number = choose_phone_number()
+
+    booking = Booking(
+        chosen_route,
+        passanger_name,
+        passanger_age,
+        passanger_gender,
+        passanger_phone_number,
+    )
+
+    save_booking(con, booking)
 
 
 if __name__ == "__main__":
