@@ -1,0 +1,4 @@
+tabulate
+survey
+black
+pytest

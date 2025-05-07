@@ -1,10 +1,12 @@
 import pyfiglet
 import sys
 import re
-from db import db_setup, get_all_routes, save_booking
+import survey
+from db import db_setup, get_all_routes, save_booking, number_booking_for_train_route_and_date
 from pprint import pprint
 from datetime import date
 from booking import Booking
+from tabulate import tabulate
 
 TEST = False
 
@@ -20,60 +22,66 @@ def main():
     con = db_setup()
 
     figlet = pyfiglet.Figlet(font="slant")
-    art = figlet.renderText("WELCOME")
+    art = figlet.renderText("WELCOME :)")
     print(art)
 
     print("1. Book Your Train Ticket")
     print("2. Quit")
 
     while True:
-        option = input("Enter the number you want choose\n")
+        option = input("Enter the number you want choose:\n")
         match (option.lower()):
             case "1":
-                print("Welcome to our website")
+                print("Welcome to our website.")
                 book_a_train(con)
                 break
 
             case "2":
-                print("Thank for visiting our website")
+                print("Thank for visiting our website.")
                 break
 
 
 def choose_dep_station(departure_stations):
-    while True:
-        chosen_dep_station = input("Enter the DEPARTURE STATION: ").strip()
-        if chosen_dep_station in departure_stations:
-            break
-        else:
-            print("Invalid Station code")
+    # while True:
+    #     chosen_dep_station = input("Enter the DEPARTURE STATION: ").strip()
+    #     if chosen_dep_station in departure_stations:
+    #         break
+    #     else:
+    #         print("Invalid Station code")
 
-    return chosen_dep_station
+    # return chosen_dep_station
 
+    index = survey.routines.select("Enter the DEPARTURE STATION: ", options = departure_stations)
+    return departure_stations[index]
 
 def choose_arri_station(arrival_stations):
-    while True:
-        chosen_arri_station = input("Enter the ARRIVAL STATION: ").strip()
-        if chosen_arri_station in arrival_stations:
-            break
-        else:
-            print("Invalid Station code")
+    # while True:
+    #     chosen_arri_station = input("Enter the ARRIVAL STATION: ").strip()
+    #     if chosen_arri_station in arrival_stations:
+    #         break
+    #     else:
+    #         print("Invalid Station code")
 
-    return chosen_arri_station
+    # return chosen_arri_station
 
+    index = survey.routines.select("Enter the ARRIVAL STATION: ", options = arrival_stations)
+    return arrival_stations[index]
 
 def choose_date():
-    while True:
-        chosen_date_string = input("Enter your DATE for journey(YYYY-MM-DD): ").strip()
+    # while True:
+    #     chosen_date_string = input("Enter your DATE for journey(YYYY-MM-DD): ").strip()
 
-        try:
-            chosen_date = date.fromisoformat(chosen_date_string)
-            break
-        except ValueError:
-            print("Invalid date")
-            continue
+    #     try:
+    #         chosen_date = date.fromisoformat(chosen_date_string)
+    #         break
+    #     except ValueError:
+    #         print("Invalid date")
+    #         continue
 
-    return chosen_date
+    # return chosen_date
 
+    choose_date = survey.routines.datetime("Enter your DATE for journey(YYYY-MM-DD): ", attrs = ("year", "month", "day"))
+    return choose_date.date()
 
 def choose_route_number(available_routes):
     while True:
@@ -99,8 +107,8 @@ def choose_name():
     while True:
 
         try:
-            passanger_name = input("Enter your NAME: ").strip()
-            if len(passanger_name) == 0:
+            passenger_name = input("Enter your NAME: ").strip()
+            if len(passenger_name) == 0:
 
                 raise ValueError
             break
@@ -108,7 +116,7 @@ def choose_name():
             print("Invalid choice")
             continue
 
-    return passanger_name
+    return passenger_name
 
 
 def choose_age():
@@ -117,8 +125,8 @@ def choose_age():
     while True:
 
         try:
-            passanger_age = int(input("Enter your AGE: "))
-            if passanger_age <= 3:
+            passenger_age = int(input("Enter your AGE: "))
+            if passenger_age <= 3:
 
                 raise ValueError
             break
@@ -126,7 +134,7 @@ def choose_age():
             print("Invalid age")
             continue
 
-        return passanger_age
+    return passenger_age
 
 
 def choose_gender():
@@ -135,8 +143,8 @@ def choose_gender():
     while True:
 
         try:
-            passanger_gender = input("Enter your GENDER[M/F/O]: ").strip()
-            if passanger_gender not in ["M", "F", "O"]:
+            passenger_gender = input("Enter your GENDER[M/F/O]: ").strip()
+            if passenger_gender not in ["M", "F", "O"]:
 
                 raise ValueError
             break
@@ -144,7 +152,7 @@ def choose_gender():
             print("Invalid Gender")
             continue
 
-    return passanger_gender
+    return passenger_gender
 
 
 def choose_phone_number():
@@ -153,8 +161,8 @@ def choose_phone_number():
     while True:
 
         try:
-            passanger_phone_number = input("Enter your PHONE NUMBER: ").strip()
-            if not re.match(r"[7-9][0-9]{9}", passanger_phone_number):
+            passenger_phone_number = input("Enter your PHONE NUMBER: ").strip()
+            if not re.match(r"[7-9][0-9]{9}", passenger_phone_number):
 
                 raise ValueError
             break
@@ -162,7 +170,7 @@ def choose_phone_number():
             print("Invalid Phone Number")
             continue
 
-    return passanger_phone_number
+    return passenger_phone_number
 
 
 def book_a_train(con):
@@ -177,7 +185,7 @@ def book_a_train(con):
 
         chosen_weekday = WEEKDAYS[chosen_date.weekday()]
 
-        available_routes = []  # TODO check the available seats
+        available_routes = []  
         for route in routes:
             if (
                 chosen_dep_station == route.dep_station
@@ -192,72 +200,80 @@ def book_a_train(con):
 
         chosen_route = available_routes[chosen_route_number]
 
-        passanger_name = "saket"
-        passanger_age = 17
-        passanger_gender = "M"
-        passanger_phone_number = "9988776655"
+        passenger_name = "saket"
+        passenger_age = 17
+        passenger_gender = "M"
+        passenger_phone_number = "9988776655"
 
     else:
-
-        print("Here are all the arrival stations available")
 
         departure_stations = set()
         for route in routes:
             departure_stations.add(route.dep_station)
-        departure_stations = sorted(departure_stations)
-        pprint(departure_stations)  # TODO proper print
-
-        chosen_dep_station = choose_dep_station(departure_stations)
+        departure_stations_sorted = sorted(departure_stations)
+        chosen_dep_station = choose_dep_station(departure_stations_sorted)
 
         arrival_stations = set()
         for route in routes:
             if chosen_dep_station == route.dep_station:
                 arrival_stations.add(route.arri_station)
-        arri_stations = sorted(arrival_stations)
-        pprint(
-            arrival_stations
-        )  # TODO proper print , print full station name , use survey package
-
-        chosen_arri_station = choose_arri_station(arrival_stations)
+        arrival_stations_sorted = sorted(arrival_stations)
+        chosen_arri_station = choose_arri_station(arrival_stations_sorted)
 
         chosen_date = choose_date()
-
         chosen_weekday = WEEKDAYS[chosen_date.weekday()]
 
-        available_routes = []  # TODO check the available seats
+        available_routes = []
+        available_seats = {}  
         for route in routes:
+            available_seats[route.id] = route.total_seats - number_booking_for_train_route_and_date(con, route, chosen_date) 
             if (
                 chosen_dep_station == route.dep_station
                 and chosen_arri_station == route.arri_station
                 and chosen_weekday in route.days_running
+                and available_seats[route.id] > 0
             ):
                 available_routes.append(route)
         if len(available_routes) == 0:
             sys.exit("Trains are not available")
-        # TODO to print it nicely like pizza.py , print all information of train
+        
+        available_routes_to_print = []
         for i, route in enumerate(available_routes):
-            print(f"{i}: {route}")  # TODO print number of seats free
+            # print(f"{i}: {route}, {available_seats[route.id]}")  
+            print_route = {
+                "Row Number": i,
+                "Train Number": route.number,
+                "Train Name": route.name,
+                "Departure Station": route.dep_station,
+                "Arrival Station": route.arri_station,
+                "Departure Time": route.dep_time,
+                "Arrival Time": route.arri_time,
+                "Seats Available": available_seats[route.id],
+                "Days Running": route.days_running
+            }
+            available_routes_to_print.append(print_route)
+        print(tabulate(available_routes_to_print, headers="keys", tablefmt="grid"))
 
         chosen_route_number = choose_route_number(available_routes)
-
-        print(chosen_route_number)  ## TODO name, age, gender, ph. number
         chosen_route = available_routes[chosen_route_number]
 
-        passanger_name = choose_name()
-        passanger_age = choose_age()
-        passanger_gender = choose_gender()
-        passanger_phone_number = choose_phone_number()
+        passenger_name = choose_name()
+        passenger_age = choose_age()
+        passenger_gender = choose_gender()
+        passenger_phone_number = choose_phone_number()
 
     booking = Booking(
         chosen_route,
-        passanger_name,
-        passanger_age,
-        passanger_gender,
-        passanger_phone_number,
+        chosen_date,
+        passenger_name,
+        passenger_age,
+        passenger_gender,
+        passenger_phone_number,
     )
 
-    save_booking(con, booking)
-
+    
+    pnr = save_booking(con, booking)
+    print(f"Thank you for your booking :), here is your PNR number: {pnr}")
 
 if __name__ == "__main__":
     main()

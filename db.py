@@ -52,7 +52,7 @@ def db_setup():
             sys.exit("File does not exist")
 
     cur.execute(
-        "CREATE TABLE IF NOT EXISTS bookings(pnr INTEGER PRIMARY KEY AUTOINCREMENT , route_id INTEGER , name TEXT , age INTEGER , gender TEXT , phone_number TEXT, FOREIGN KEY (route_id) REFERENCES routes(id))"
+        "CREATE TABLE IF NOT EXISTS bookings(pnr INTEGER PRIMARY KEY AUTOINCREMENT, route_id INTEGER, date TEXT, name TEXT, age INTEGER, gender TEXT, phone_number TEXT, FOREIGN KEY (route_id) REFERENCES routes(id))"
     )
     return con
 
@@ -76,11 +76,11 @@ def save_booking(con, booking):
 
     cur = con.cursor()
 
-    
     cur.execute(
-        "INSERT INTO bookings (route_id, name, age, gender, phone_number) VALUES(?, ?, ?, ?, ?)",
+        "INSERT INTO bookings (route_id, date, name, age, gender, phone_number) VALUES(?, ?, ?, ?, ?, ?)",
         (
             booking.route.id,
+            booking.date.isoformat(),
             booking.name,
             booking.age,
             booking.gender,
@@ -88,4 +88,12 @@ def save_booking(con, booking):
         ),
     )
     cur.connection.commit()
-       
+
+    return cur.lastrowid
+
+def number_booking_for_train_route_and_date(con, route, date):
+
+    cur = con.cursor()
+
+    number_of_booking = cur.execute("SELECT COUNT(*) FROM bookings WHERE route_id = ? AND date = ?",(route.id, date.isoformat())).fetchone()[0]
+    return number_of_booking

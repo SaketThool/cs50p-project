@@ -4,7 +4,8 @@
 		"vscode": {
 			"extensions": [
 				"yy0931.vscode-sqlite3-editor",
-				"janisdd.vscode-edit-csv"
+				"janisdd.vscode-edit-csv",
+				"ms-python.debugpy"
 			]
 		}
 	}
