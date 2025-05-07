@@ -2,7 +2,7 @@ import pyfiglet
 import sys
 import re
 import survey
-from db import db_setup, get_all_routes, save_booking, number_booking_for_train_route_and_date
+from db import db_setup, get_all_routes, save_booking, number_booking_for_train_route_and_date, get_booking
 from pprint import pprint
 from datetime import date
 from booking import Booking
@@ -26,17 +26,23 @@ def main():
     print(art)
 
     print("1. Book Your Train Ticket")
-    print("2. Quit")
+    print("2. View Booking")
+    print("3. Quit")
 
     while True:
         option = input("Enter the number you want choose:\n")
         match (option.lower()):
             case "1":
-                print("Welcome to our website.")
+                print("Welcome to the booking site.")
                 book_a_train(con)
                 break
 
             case "2":
+                print("Welcome to the view booking site.")
+                view_your_booking(con)
+                break
+
+            case "3":
                 print("Thank for visiting our website.")
                 break
 
@@ -172,6 +178,19 @@ def choose_phone_number():
 
     return passenger_phone_number
 
+def choose_pnr():
+    while True:
+
+        try:
+            chosen_pnr = int(input("Enter your PNR Number: "))
+            
+            break
+        except ValueError:
+            print("Invalid PNR")
+            continue
+
+    return chosen_pnr
+
 
 def book_a_train(con):
     routes = get_all_routes(con)
@@ -274,6 +293,25 @@ def book_a_train(con):
     
     pnr = save_booking(con, booking)
     print(f"Thank you for your booking :), here is your PNR number: {pnr}")
+
+def view_your_booking(con):
+
+    chosen_pnr = choose_pnr()
+    booking = get_booking(con, chosen_pnr)
+    if not booking:
+        sys.exit("Invalid PNR")
+
+    booking_to_print = [{
+        "PNR": chosen_pnr,
+        "Date": booking.date,
+        "Train Number": booking.route.number,
+        "Train Name": booking.route.name,
+        "Name": booking.name,
+        "Age": booking.age,
+        "Gender": booking.gender,
+        "Phone Number": booking.phone_number
+    }]
+    print(tabulate(booking_to_print, headers="keys", tablefmt="grid"))
 
 if __name__ == "__main__":
     main()

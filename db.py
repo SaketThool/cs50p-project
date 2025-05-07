@@ -1,7 +1,9 @@
 import sqlite3
 import csv
+from pprint import pprint
 from train import TrainRoute
-
+from booking import Booking
+from datetime import date
 
 def db_setup():
 
@@ -97,3 +99,37 @@ def number_booking_for_train_route_and_date(con, route, date):
 
     number_of_booking = cur.execute("SELECT COUNT(*) FROM bookings WHERE route_id = ? AND date = ?",(route.id, date.isoformat())).fetchone()[0]
     return number_of_booking
+
+def get_booking(con, pnr):
+
+    cur = con.cursor()
+
+    row = cur.execute("SELECT * FROM bookings WHERE pnr = ? ",(pnr,)).fetchone()
+    if row:
+        route = get_route(con, row[1])
+        if not route:
+            return None
+        
+        booking = Booking(
+           route, date.fromisoformat(row[2]), row[3], row[4], row[5], row[6]
+        )
+
+        return booking
+    
+    else:
+        return None
+    
+def get_route(con, route_id):
+
+    cur = con.cursor()
+
+    row = cur.execute("SELECT * FROM routes WHERE id = ? ",(route_id,)).fetchone()
+    if row:
+        route = TrainRoute(
+            row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]
+        )
+
+        return route
+    
+    else:
+        return None

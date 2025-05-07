@@ -12,3 +12,11 @@ My final project for the CS50P Python course.
 # How to run program
 * install dependencies: `$ pip install -r requirements.txt`
 * Run program: `$ python project.py`
+
+# TODO
+* refactor choose function and db function
+* add comments in the code
+* write test
+* format the code with black
+* write README
+* Record demo video
