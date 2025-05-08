@@ -44,7 +44,8 @@ def main():
             case "3":
                 print("Thank for visiting our website.")
                 break
-
+    con.close()
+    
 def book_a_train(con):
     routes = get_all_routes(con)
     if TEST:
@@ -165,6 +166,7 @@ def view_your_booking(con):
         "Phone Number": booking.phone_number
     }]
     print(tabulate(booking_to_print, headers="keys", tablefmt="grid"))
+
 
 if __name__ == "__main__":
     main()

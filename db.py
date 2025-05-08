@@ -10,10 +10,10 @@ def db_setup():
 
     con = sqlite3.connect("train.db")
     cur = con.cursor()    
-
-    cur.execute(
-        "CREATE TABLE IF NOT EXISTS bookings(pnr INTEGER PRIMARY KEY AUTOINCREMENT, route_id INTEGER, date TEXT, name TEXT, age INTEGER, gender TEXT, phone_number TEXT, FOREIGN KEY (route_id) REFERENCES routes(id))"
-    )
+    
+    setup_station_table(cur)
+    setup_routes_table(cur)
+    setup_booking_table(cur)
     return con
 
 
@@ -138,4 +138,11 @@ def setup_routes_table(cur):
                 cur.connection.commit()
         except FileNotFoundError:
             sys.exit("File does not exist")
+
+def setup_booking_table(cur):
+
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS bookings(pnr INTEGER PRIMARY KEY AUTOINCREMENT, route_id INTEGER, date TEXT, name TEXT, age INTEGER, gender TEXT, phone_number TEXT, FOREIGN KEY (route_id) REFERENCES routes(id))"
+    )
+
             
