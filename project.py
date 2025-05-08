@@ -1,12 +1,11 @@
 import pyfiglet
 import sys
-import re
-import survey
 from db import db_setup, get_all_routes, save_booking, number_booking_for_train_route_and_date, get_booking
 from pprint import pprint
 from datetime import date
 from booking import Booking
 from tabulate import tabulate
+from choose import choose_dep_station, choose_arri_station, choose_date, choose_route_number, choose_name, choose_age, choose_gender, choose_phone_number,choose_pnr
 
 TEST = False
 
@@ -45,152 +44,6 @@ def main():
             case "3":
                 print("Thank for visiting our website.")
                 break
-
-
-def choose_dep_station(departure_stations):
-    # while True:
-    #     chosen_dep_station = input("Enter the DEPARTURE STATION: ").strip()
-    #     if chosen_dep_station in departure_stations:
-    #         break
-    #     else:
-    #         print("Invalid Station code")
-
-    # return chosen_dep_station
-
-    index = survey.routines.select("Enter the DEPARTURE STATION: ", options = departure_stations)
-    return departure_stations[index]
-
-def choose_arri_station(arrival_stations):
-    # while True:
-    #     chosen_arri_station = input("Enter the ARRIVAL STATION: ").strip()
-    #     if chosen_arri_station in arrival_stations:
-    #         break
-    #     else:
-    #         print("Invalid Station code")
-
-    # return chosen_arri_station
-
-    index = survey.routines.select("Enter the ARRIVAL STATION: ", options = arrival_stations)
-    return arrival_stations[index]
-
-def choose_date():
-    # while True:
-    #     chosen_date_string = input("Enter your DATE for journey(YYYY-MM-DD): ").strip()
-
-    #     try:
-    #         chosen_date = date.fromisoformat(chosen_date_string)
-    #         break
-    #     except ValueError:
-    #         print("Invalid date")
-    #         continue
-
-    # return chosen_date
-
-    choose_date = survey.routines.datetime("Enter your DATE for journey(YYYY-MM-DD): ", attrs = ("year", "month", "day"))
-    return choose_date.date()
-
-def choose_route_number(available_routes):
-    while True:
-
-        try:
-            chosen_route_number = int(input("Enter ROW number to book your train: "))
-            if not (
-                chosen_route_number >= 0 and chosen_route_number < len(available_routes)
-            ):
-                # if chosen_route_number < 0 or chosen_route_number >= len(available_routes):
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid choice")
-            continue
-
-    return chosen_route_number
-
-
-def choose_name():
-
-    # NAME
-    while True:
-
-        try:
-            passenger_name = input("Enter your NAME: ").strip()
-            if len(passenger_name) == 0:
-
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid choice")
-            continue
-
-    return passenger_name
-
-
-def choose_age():
-
-    # AGE
-    while True:
-
-        try:
-            passenger_age = int(input("Enter your AGE: "))
-            if passenger_age <= 3:
-
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid age")
-            continue
-
-    return passenger_age
-
-
-def choose_gender():
-
-    # GENDER
-    while True:
-
-        try:
-            passenger_gender = input("Enter your GENDER[M/F/O]: ").strip()
-            if passenger_gender not in ["M", "F", "O"]:
-
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid Gender")
-            continue
-
-    return passenger_gender
-
-
-def choose_phone_number():
-
-    # PHONE NUMBER
-    while True:
-
-        try:
-            passenger_phone_number = input("Enter your PHONE NUMBER: ").strip()
-            if not re.match(r"[7-9][0-9]{9}", passenger_phone_number):
-
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid Phone Number")
-            continue
-
-    return passenger_phone_number
-
-def choose_pnr():
-    while True:
-
-        try:
-            chosen_pnr = int(input("Enter your PNR Number: "))
-            
-            break
-        except ValueError:
-            print("Invalid PNR")
-            continue
-
-    return chosen_pnr
-
 
 def book_a_train(con):
     routes = get_all_routes(con)
