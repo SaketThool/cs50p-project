@@ -7,48 +7,56 @@ from booking import Booking
 from tabulate import tabulate
 from choose import choose_dep_station, choose_arri_station, choose_date, choose_route_number, choose_name, choose_age, choose_gender, choose_phone_number,choose_pnr
 
-TEST = False
+TEST = False  # This helps to run the project without prompting the input fron the user 
 
+# Here are weekdays stored in weekdays in a dict where key is the week number.
 WEEKDAYS = {0: "mon", 1: "tue", 2: "wed", 3: "thu", 4: "fri", 5: "sat", 6: "sun"}
 
 
 def main():
-
+    # In this it helps us to test the booking section.
+    # It automatically set the booking values.
     global TEST
     if len(sys.argv) == 2 and sys.argv[1] == "-t":
         TEST = True
 
+    # Setting up the table
+    # con is the connection which help to connect with the database whenever it is been required in the project
     con = db_setup()
 
+    # This is the figlet which make it little attrictive 
     figlet = pyfiglet.Figlet(font="slant")
     art = figlet.renderText("WELCOME :)")
     print(art)
 
+    # Here are the option to choose 
     print("1. Book Your Train Ticket")
     print("2. View Booking")
     print("3. Quit")
 
+    # In this it ask for the choice and greet you wit some message
     while True:
         option = input("Enter the number you want choose:\n")
         match (option.lower()):
             case "1":
                 print("Welcome to the booking site.")
-                book_a_train(con)
+                book_a_train(con) # In this booking of ticket the ticket is been done
                 break
 
             case "2":
                 print("Welcome to the view booking site.")
-                view_your_booking(con)
+                view_your_booking(con) # In this you will review your booking with the help of PNR number
                 break
 
             case "3":
                 print("Thank for visiting our website.")
                 break
     con.close()
-    
-def book_a_train(con):
-    routes = get_all_routes(con)
-    if TEST:
+
+   
+def book_a_train(con):  # this function help to book the ticket
+    routes = get_all_routes(con) # TODO
+    if TEST:   # This part help to test the project with the help of command line argument
 
         chosen_dep_station = "NGP"
 
@@ -78,7 +86,7 @@ def book_a_train(con):
         passenger_gender = "M"
         passenger_phone_number = "9988776655"
 
-    else:
+    else:   # This part help to get input from the user
 
         departure_stations = set()
         for route in routes:
@@ -144,11 +152,11 @@ def book_a_train(con):
         passenger_phone_number,
     )
 
-    
+    # This tell the us about the the bookin you have done with a PNR number
     pnr = save_booking(con, booking)
     print(f"Thank you for your booking :), here is your PNR number: {pnr}")
 
-def view_your_booking(con):
+def view_your_booking(con): # In this part the booking information is been stored 
 
     chosen_pnr = choose_pnr()
     booking = get_booking(con, chosen_pnr)

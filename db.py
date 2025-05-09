@@ -6,24 +6,28 @@ from train import TrainRoute
 from booking import Booking
 from datetime import date
 
+# It help us to create some necessary database files and table which help to run the program 
+# It help to input the data in the table which import the data in the table 
 def db_setup():
 
+    # In this it connects with the sqlite3 database which connect to the database file which is been present in the file or need to be created in the file
     con = sqlite3.connect("train.db")
-    cur = con.cursor()    
+    cur = con.cursor() # cur is the corsor which help to read and write in the data base   
     
-    setup_station_table(cur)
-    setup_routes_table(cur)
-    setup_booking_table(cur)
+    setup_station_table(cur)  # This function use to store the station name and station code in the table  
+    setup_routes_table(cur)   # This function use to store the train route details in the table
+    setup_booking_table(cur)  # This function use to store the booking detail of the user in the table
     return con
 
 
-def get_all_routes(con):
+def get_all_routes(con): # This function is use to get the route detail which is been inputed by the user both departure and arrival station
 
     cur = con.cursor()
 
-    rows = cur.execute("SELECT * FROM routes").fetchall()
+    rows = cur.execute("SELECT * FROM routes").fetchall() # TODO
 
-    trains = []
+    # It store the detalis which the user input
+    trains = []  
     for row in rows:
         train = TrainRoute(
             row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]
@@ -32,10 +36,11 @@ def get_all_routes(con):
     return trains
 
 
-def save_booking(con, booking):
+def save_booking(con, booking): # This function help to save the booking details of the user which is been input
 
     cur = con.cursor()
 
+    #TODO
     cur.execute(
         "INSERT INTO bookings (route_id, date, name, age, gender, phone_number) VALUES(?, ?, ?, ?, ?, ?)",
         (
@@ -47,21 +52,23 @@ def save_booking(con, booking):
             booking.phone_number
         ),
     )
-    cur.connection.commit()
+    cur.connection.commit()  #TODO
 
-    return cur.lastrowid
+    return cur.lastrowid  #TODO
 
-def number_booking_for_train_route_and_date(con, route, date):
+def number_booking_for_train_route_and_date(con, route, date):  #TODO
 
     cur = con.cursor()
 
+    #TODO
     number_of_booking = cur.execute("SELECT COUNT(*) FROM bookings WHERE route_id = ? AND date = ?",(route.id, date.isoformat())).fetchone()[0]
     return number_of_booking
 
-def get_booking(con, pnr):
+def get_booking(con, pnr): # This function help to get the booking information which is been stored in booking class
 
     cur = con.cursor()
 
+    #TODO
     row = cur.execute("SELECT * FROM bookings WHERE pnr = ? ",(pnr,)).fetchone()
     if row:
         route = get_route(con, row[1])
@@ -77,10 +84,11 @@ def get_booking(con, pnr):
     else:
         return None
     
-def get_route(con, route_id):
+def get_route(con, route_id): # It help to get the id for the train detail which help to select the train user want to book
 
     cur = con.cursor()
 
+    #TODO
     row = cur.execute("SELECT * FROM routes WHERE id = ? ",(route_id,)).fetchone()
     if row:
         route = TrainRoute(
@@ -144,5 +152,4 @@ def setup_booking_table(cur):
     cur.execute(
         "CREATE TABLE IF NOT EXISTS bookings(pnr INTEGER PRIMARY KEY AUTOINCREMENT, route_id INTEGER, date TEXT, name TEXT, age INTEGER, gender TEXT, phone_number TEXT, FOREIGN KEY (route_id) REFERENCES routes(id))"
     )
-
-            
+          

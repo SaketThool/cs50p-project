@@ -1,7 +1,7 @@
 import re
 import survey
 
-def choose_dep_station(departure_stations):
+def choose_dep_station(departure_stations):  # This part is for choice of the departure station
     # while True:
     #     chosen_dep_station = input("Enter the DEPARTURE STATION: ").strip()
     #     if chosen_dep_station in departure_stations:
@@ -14,17 +14,17 @@ def choose_dep_station(departure_stations):
     index = survey.routines.select("Enter the DEPARTURE STATION: ", options = departure_stations)
     return departure_stations[index]
 
-def choose_arri_station(arrival_stations):
+def choose_arri_station(arrival_stations):   # this part is for choice of the arrival station
     
     index = survey.routines.select("Enter the ARRIVAL STATION: ", options = arrival_stations)
     return arrival_stations[index]
 
-def choose_date():
+def choose_date(): # part is for inputing the date
 
     choose_date = survey.routines.datetime("Enter your DATE for journey(YYYY-MM-DD): ", attrs = ("year", "month", "day"))
     return choose_date.date()
 
-def choose_route_number(available_routes):
+def choose_route_number(available_routes):   # This part is for the choice of selecting the train with its information 
     while True:
 
         try:
@@ -41,7 +41,7 @@ def choose_route_number(available_routes):
 
     return chosen_route_number
 
-def choose_name():
+def choose_name(): # This part is for input of the name of the user
 
     # NAME
     while True:
@@ -58,7 +58,7 @@ def choose_name():
 
     return passenger_name
 
-def choose_age():
+def choose_age():  # This part is for input of the age of the user
 
     # AGE
     while True:
@@ -75,7 +75,7 @@ def choose_age():
 
     return passenger_age
 
-def choose_gender():
+def choose_gender():  # This part is for the input of the gender of the user
 
     # GENDER
     while True:
@@ -92,7 +92,7 @@ def choose_gender():
 
     return passenger_gender
 
-def choose_phone_number():
+def choose_phone_number():   # This part is for the input of the Phone Number of the User
 
     # PHONE NUMBER
     while True:
