@@ -5,7 +5,8 @@
 			"extensions": [
 				"yy0931.vscode-sqlite3-editor",
 				"janisdd.vscode-edit-csv",
-				"ms-python.debugpy"
+				"ms-python.debugpy",
+				"streetsidesoftware.code-spell-checker"
 			]
 		}
 	}

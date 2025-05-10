@@ -1,13 +1,13 @@
 import pyfiglet
 import sys
-from db import db_setup, get_all_routes, save_booking, number_booking_for_train_route_and_date, get_booking
+from db import db_setup, get_all_routes, save_booking, number_bookings_for_train_route_and_date, get_booking
 from pprint import pprint
 from datetime import date
 from booking import Booking
 from tabulate import tabulate
-from choose import choose_dep_station, choose_arri_station, choose_date, choose_route_number, choose_name, choose_age, choose_gender, choose_phone_number,choose_pnr
+from choose import choose_dep_station, choose_arri_station, choose_date, choose_route, choose_name, choose_age, choose_gender, choose_phone_number,choose_pnr
 
-TEST = False  # This helps to run the project without prompting the input fron the user 
+TEST = False  # This helps to run the project without prompting the input from the user 
 
 # Here are weekdays stored in weekdays in a dict where key is the week number.
 WEEKDAYS = {0: "mon", 1: "tue", 2: "wed", 3: "thu", 4: "fri", 5: "sat", 6: "sun"}
@@ -24,7 +24,7 @@ def main():
     # con is the connection which help to connect with the database whenever it is been required in the project
     con = db_setup()
 
-    # This is the figlet which make it little attrictive 
+    # This is the figlet which make it little attractive 
     figlet = pyfiglet.Figlet(font="slant")
     art = figlet.renderText("WELCOME :)")
     print(art)
@@ -34,13 +34,13 @@ def main():
     print("2. View Booking")
     print("3. Quit")
 
-    # In this it ask for the choice and greet you wit some message
+    # In this it ask for the choice and greet you with some message
     while True:
         option = input("Enter the number you want choose:\n")
         match (option.lower()):
             case "1":
                 print("Welcome to the booking site.")
-                book_a_train(con) # In this booking of ticket the ticket is been done
+                book_a_train(con) 
                 break
 
             case "2":
@@ -53,17 +53,17 @@ def main():
                 break
     con.close()
 
-   
+ 
 def book_a_train(con):  # this function help to book the ticket
-    routes = get_all_routes(con) # TODO
-    if TEST:   # This part help to test the project with the help of command line argument
+    routes = get_all_routes(con)
+
+    # This part help to test the project with the help of command line argument.
+    # It dont ask user the input to make it quickly with same input all the time 
+    if TEST:   
 
         chosen_dep_station = "NGP"
-
         chosen_arri_station = "CSMT"
-
         chosen_date = date.fromisoformat("2025-07-21")
-
         chosen_weekday = WEEKDAYS[chosen_date.weekday()]
 
         available_routes = []  
@@ -78,7 +78,6 @@ def book_a_train(con):  # this function help to book the ticket
             sys.exit("Trains are not available")
 
         chosen_route_number = 0
-
         chosen_route = available_routes[chosen_route_number]
 
         passenger_name = "saket"
@@ -87,27 +86,30 @@ def book_a_train(con):  # this function help to book the ticket
         passenger_phone_number = "9988776655"
 
     else:   # This part help to get input from the user
-
+        
+        # It collect all the departure station without duplicate(The set removes the duplicate)
         departure_stations = set()
         for route in routes:
-            departure_stations.add(route.dep_station)
-        departure_stations_sorted = sorted(departure_stations)
-        chosen_dep_station = choose_dep_station(departure_stations_sorted)
+            departure_stations.add(route.dep_station) 
+        chosen_dep_station = choose_dep_station(departure_stations)
 
+        # It collect all the arrival station without duplicate(The set removes the duplicate)
+        # that we can travel from chosen departure station
         arrival_stations = set()
         for route in routes:
-            if chosen_dep_station == route.dep_station:
+            if route.dep_station == chosen_dep_station:
                 arrival_stations.add(route.arri_station)
-        arrival_stations_sorted = sorted(arrival_stations)
-        chosen_arri_station = choose_arri_station(arrival_stations_sorted)
+        chosen_arri_station = choose_arri_station(arrival_stations)
 
         chosen_date = choose_date()
         chosen_weekday = WEEKDAYS[chosen_date.weekday()]
-
+    
+        # In this we finds all the routes that matches for departure, arrival and free seats available for that day   
         available_routes = []
         available_seats = {}  
         for route in routes:
-            available_seats[route.id] = route.total_seats - number_booking_for_train_route_and_date(con, route, chosen_date) 
+            # In this we are finding the free seats for this route and chosen day
+            available_seats[route.id] = route.total_seats - number_bookings_for_train_route_and_date(con, route, chosen_date) 
             if (
                 chosen_dep_station == route.dep_station
                 and chosen_arri_station == route.arri_station
@@ -116,10 +118,11 @@ def book_a_train(con):  # this function help to book the ticket
             ):
                 available_routes.append(route)
         if len(available_routes) == 0:
-            sys.exit("Trains are not available")
+            sys.exit("Trains are not available. Please try Again :)")
         
+        # In this preparing a table for user to select the route to book
         available_routes_to_print = []
-        for i, route in enumerate(available_routes):
+        for i, route in enumerate(available_routes):  # Go through each route with the index of the route
             # print(f"{i}: {route}, {available_seats[route.id]}")  
             print_route = {
                 "Row Number": i,
@@ -134,9 +137,7 @@ def book_a_train(con):  # this function help to book the ticket
             }
             available_routes_to_print.append(print_route)
         print(tabulate(available_routes_to_print, headers="keys", tablefmt="grid"))
-
-        chosen_route_number = choose_route_number(available_routes)
-        chosen_route = available_routes[chosen_route_number]
+        chosen_route = choose_route(available_routes)
 
         passenger_name = choose_name()
         passenger_age = choose_age()
@@ -152,11 +153,11 @@ def book_a_train(con):  # this function help to book the ticket
         passenger_phone_number,
     )
 
-    # This tell the us about the the bookin you have done with a PNR number
+    # This save the booking to database and get a PNR number
     pnr = save_booking(con, booking)
     print(f"Thank you for your booking :), here is your PNR number: {pnr}")
 
-def view_your_booking(con): # In this part the booking information is been stored 
+def view_your_booking(con): # In this part the user will enter PNR and view its booking
 
     chosen_pnr = choose_pnr()
     booking = get_booking(con, chosen_pnr)
