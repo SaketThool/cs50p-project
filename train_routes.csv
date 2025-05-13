@@ -3,5 +3,25 @@ train_No,train_Name,dep_station,arri_station,dep_time,arri_time,total_seats,days
 12262,CSMT DURONTO EX,CSMT,NGP,20:55,08:15,72,tue/thu/sat
 17412,Mahalaxmi Express,PUNE,TNA,03:30,06:12,144,sun/tue/thu/sat
 17412,Mahalaxmi Express,TNA,PUNE,03:30,06:12,144,mon/wed/fri
-12152,Samarsata SF Express,NGP,NK,16:25,01:52,72,sat
-12152,Samarsata SF Express,NK,NGP,16:25,01:52,72,sun
+12152,Samarsata SF Express (PT),NGP,CSMT,16:25,05:30,216,sat/sun
+12153,Samarsata SF Express (PT),CSMT,NGP,16:25,05:30,216,wed/thu
+22846,Hatia - Pune SF Express (PT),NGP,PUNE,11:00,02:15,144,tue/sat
+22847,Hatia - Pune SF Express (PT),PUNE,NGP,11:00,02:15,144,wed/fri
+01468,Nagpur - Pune SF Special Fare Summer Special,NGP,PUNE,08:00,23:30,72,thu
+01469,Nagpur - Pune SF Special Fare Summer Special,PUNE,NGP,08:00,23:30,72,sun
+22847,Visakhapatnam - Mumbai LTT SF Express (via Nagpur),NGP,TNA,00:05,13:00,144,mon
+22848,Visakhapatnam - Mumbai LTT SF Express (via Nagpur),TNA,NGP,00:05,13:00,144,thu
+22866,Puri - Mumbai LTT Weekly SF Express (via Jharsuguda Road),NGP,TNA,00:05,12:17,216,wed
+22867,Puri - Mumbai LTT Weekly SF Express (via Jharsuguda Road),TNA,NGP,00:05,12:17,216,sat
+20821,Pune - Santragachi Humsafar Express,NGP,G,01:25,03:00,144,tue
+20822,Pune - Santragachi Humsafar Express,G,NGP,01:25,03:00,144,fri
+22939,Okha - Bilaspur SF Express (PT),NGP,G,20:10,21:45,72,sun
+22940,Okha - Bilaspur SF Express (PT),G,NGP,20:10,21:45,72,sat
+20916,Indore - Lingampalli Humsafar Express,CSMT,PUNE,00:25,03:00,144,sun
+20917,Indore - Lingampalli Humsafar Express,PUNE,CSMT,00:25,03:00,144,sat
+17222,Mumbai LTT - Kakinada Port Express (PT),CSMT,PUNE,13:15,16:35,216,sun/thu
+17223,Mumbai LTT - Kakinada Port Express (PT),PUNE,CSMT,13:15,16:35,216,mon/fri
+12741,Vasco-da-Gama - Patna SF Express (PT),CSMT,TNA,06:25,07:25,144,thu
+12742,Vasco-da-Gama - Patna SF Express (PT),TNA,CSMT,06:25,07:25,144,mon
+01123,Mumbai LTT - Mau Special Fare Summer Special,CSMT,TNA,12:15,12:35,72,sun/fri
+01124,Mumbai LTT - Mau Special Fare Summer Special,TNA,CSMT,12:15,12:35,72,mon/sat

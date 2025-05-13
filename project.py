@@ -53,6 +53,22 @@ def main():
                 break
     con.close()
 
+def all_departure_stations(routes): # It collect all the departure station without duplicate(The set removes the duplicate)
+    departure_stations = set()
+    for route in routes:
+        departure_stations.add(route.dep_station)
+    departure_stations_sorted = sorted(departure_stations)
+    return departure_stations_sorted
+
+def all_arrival_stations(routes,chosen_dep_station):
+    # It collect all the arrival station without duplicate(The set removes the duplicate)
+    # that we can travel from chosen departure station
+    arrival_stations = set()
+    for route in routes:
+        if route.dep_station == chosen_dep_station:
+            arrival_stations.add(route.arri_station)
+    arrival_stations_sorted = sorted(arrival_stations)
+    return arrival_stations_sorted
  
 def book_a_train(con):  # this function help to book the ticket
     routes = get_all_routes(con)
@@ -86,19 +102,10 @@ def book_a_train(con):  # this function help to book the ticket
         passenger_phone_number = "9988776655"
 
     else:   # This part help to get input from the user
-        
-        # It collect all the departure station without duplicate(The set removes the duplicate)
-        departure_stations = set()
-        for route in routes:
-            departure_stations.add(route.dep_station) 
+        departure_stations = all_departure_stations(routes)
         chosen_dep_station = choose_dep_station(departure_stations)
 
-        # It collect all the arrival station without duplicate(The set removes the duplicate)
-        # that we can travel from chosen departure station
-        arrival_stations = set()
-        for route in routes:
-            if route.dep_station == chosen_dep_station:
-                arrival_stations.add(route.arri_station)
+        arrival_stations = all_arrival_stations(routes)
         chosen_arri_station = choose_arri_station(arrival_stations)
 
         chosen_date = choose_date()
