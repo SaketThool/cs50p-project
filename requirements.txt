@@ -2,3 +2,4 @@ tabulate
 survey
 black
 pytest
+pyfiglet
