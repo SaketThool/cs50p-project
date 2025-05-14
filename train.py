@@ -26,7 +26,3 @@ class TrainRoute:
     def __str__(self):
 
         return f"train with train id: {self.id} | train number: {self.number} | train name: {self.name}"
-
-   
-
-         

@@ -14,9 +14,6 @@ My final project for the CS50P Python course.
 * Run program: `$ python project.py`
 
 # TODO
-* write test
-* insert information in train_routes and train_stations csv
-* format the code with black
 * write README
 * Record demo video
 
