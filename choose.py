@@ -3,7 +3,7 @@ import survey
 
 
 def choose_dep_station(
-    departure_stations,
+    departure_stations, full_stations
 ):  # This part is for choice of the departure station
     # while True:
     #     chosen_dep_station = input("Enter the DEPARTURE STATION: ").strip()
@@ -14,9 +14,13 @@ def choose_dep_station(
 
     # return chosen_dep_station
     departure_stations_sorted = sorted(departure_stations)
+    station_to_display = []
+    for station in departure_stations_sorted:
+        fullstation = f"{full_stations[station]} ({station})"
+        station_to_display.append(fullstation)
     # This function help to give the chosen index in departure_station_sorted
     chosen_index = survey.routines.select(
-        "Enter the DEPARTURE STATION: ", options=departure_stations_sorted
+        "Enter the DEPARTURE STATION: ", options=station_to_display
     )
     return departure_stations_sorted[
         chosen_index
@@ -24,12 +28,16 @@ def choose_dep_station(
 
 
 def choose_arri_station(
-    arrival_stations,
+    arrival_stations, full_stations
 ):  # this part is for choice of the arrival station
 
     arrival_stations_sorted = sorted(arrival_stations)
+    station_to_display = []
+    for station in arrival_stations_sorted:
+        fullstation = f"{full_stations[station]} ({station})"
+        station_to_display.append(fullstation)
     chosen_index = survey.routines.select(
-        "Enter the ARRIVAL STATION: ", options=arrival_stations_sorted
+        "Enter the ARRIVAL STATION: ", options=station_to_display
     )
     return arrival_stations_sorted[chosen_index]
 

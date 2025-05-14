@@ -6,6 +6,7 @@ from db import (
     save_booking,
     number_bookings_for_train_route_and_date,
     get_booking,
+    get_all_stations,
 )
 from pprint import pprint
 from datetime import date
@@ -112,6 +113,8 @@ def find_available_routes(
 def book_a_train(con):  # this function help to book the ticket
     routes = get_all_routes(con)
 
+    full_stations = get_all_stations(con)
+
     # This part help to test the project with the help of command line argument.
     # It dont ask user the input to make it quickly with same input all the time
     if TEST:
@@ -149,10 +152,10 @@ def book_a_train(con):  # this function help to book the ticket
 
     else:  # This part help to get input from the user
         departure_stations = all_departure_stations(routes)
-        chosen_dep_station = choose_dep_station(departure_stations)
+        chosen_dep_station = choose_dep_station(departure_stations, full_stations)
 
         arrival_stations = all_arrival_stations(routes, chosen_dep_station)
-        chosen_arri_station = choose_arri_station(arrival_stations)
+        chosen_arri_station = choose_arri_station(arrival_stations, full_stations)
 
         chosen_date = choose_date()
         chosen_weekday = WEEKDAYS[chosen_date.weekday()]

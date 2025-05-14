@@ -45,6 +45,18 @@ def get_all_routes(con):
         trains.append(train)
     return trains
 
+def get_all_stations(con):
+
+    cur = con.cursor()
+
+    rows = cur.execute(
+        "SELECT * FROM stations"
+    ).fetchall()  # In this we get all the rows and columns from the route table.'*' means all columns.
+
+    stations = {}  
+    for row in rows:
+       stations[row[0]] = row[1]
+    return stations
 
 def save_booking(
     con, booking

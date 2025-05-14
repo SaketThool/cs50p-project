@@ -14,6 +14,7 @@ My final project for the CS50P Python course.
 * Run program: `$ python project.py`
 
 # TODO
+* format code
 * write README
 * Record demo video
 
