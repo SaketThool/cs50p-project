@@ -69,10 +69,23 @@ def all_arrival_stations(routes,chosen_dep_station):
             arrival_stations.add(route.arri_station)
     arrival_stations_sorted = sorted(arrival_stations)
     return arrival_stations_sorted
+
+def find_available_routes(routes, chosen_dep_station, chosen_arri_station, chosen_weekday, available_seats):
+     # In this we finds all the routes that matches for departure, arrival and free seats available for that day   
+        available_routes = []
+        for route in routes:
+            if (
+                chosen_dep_station == route.dep_station
+                and chosen_arri_station == route.arri_station
+                and chosen_weekday in route.days_running
+                and available_seats[route.id] > 0
+            ):
+                available_routes.append(route)
+        return available_routes
  
 def book_a_train(con):  # this function help to book the ticket
     routes = get_all_routes(con)
-
+    
     # This part help to test the project with the help of command line argument.
     # It dont ask user the input to make it quickly with same input all the time 
     if TEST:   
@@ -82,14 +95,12 @@ def book_a_train(con):  # this function help to book the ticket
         chosen_date = date.fromisoformat("2025-07-21")
         chosen_weekday = WEEKDAYS[chosen_date.weekday()]
 
-        available_routes = []  
+        available_seats = {}
         for route in routes:
-            if (
-                chosen_dep_station == route.dep_station
-                and chosen_arri_station == route.arri_station
-                and chosen_weekday in route.days_running
-            ):
-                available_routes.append(route)
+            # In this we are finding the free seats for this route and chosen day
+            available_seats[route.id] = route.total_seats - number_bookings_for_train_route_and_date(con, route, chosen_date)
+
+        available_routes = find_available_routes(routes, chosen_dep_station, chosen_arri_station, chosen_weekday, available_seats)
         if len(available_routes) == 0:
             sys.exit("Trains are not available")
 
@@ -110,20 +121,14 @@ def book_a_train(con):  # this function help to book the ticket
 
         chosen_date = choose_date()
         chosen_weekday = WEEKDAYS[chosen_date.weekday()]
-    
-        # In this we finds all the routes that matches for departure, arrival and free seats available for that day   
-        available_routes = []
-        available_seats = {}  
+
+        available_seats = {}
         for route in routes:
             # In this we are finding the free seats for this route and chosen day
-            available_seats[route.id] = route.total_seats - number_bookings_for_train_route_and_date(con, route, chosen_date) 
-            if (
-                chosen_dep_station == route.dep_station
-                and chosen_arri_station == route.arri_station
-                and chosen_weekday in route.days_running
-                and available_seats[route.id] > 0
-            ):
-                available_routes.append(route)
+            available_seats[route.id] = route.total_seats - number_bookings_for_train_route_and_date(con, route, chosen_date)
+
+        available_routes = find_available_routes(routes, chosen_dep_station, chosen_arri_station, chosen_weekday, available_seats)
+       
         if len(available_routes) == 0:
             sys.exit("Trains are not available. Please try Again :)")
         

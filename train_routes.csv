@@ -1,6 +1,7 @@
 train_No,train_Name,dep_station,arri_station,dep_time,arri_time,total_seats,days_running
 12262,CSMT DURONTO EX,NGP,CSMT,20:55,08:15,72,mon/wed/fri
 12262,CSMT DURONTO EX,CSMT,NGP,20:55,08:15,72,tue/thu/sat
+12299,CSMT PRO DURONTO EX,NGP,CSMT,20:55,04:00,20,mon/wed/fri
 17412,Mahalaxmi Express,PUNE,TNA,03:30,06:12,144,sun/tue/thu/sat
 17412,Mahalaxmi Express,TNA,PUNE,03:30,06:12,144,mon/wed/fri
 12152,Samarsata SF Express (PT),NGP,CSMT,16:25,05:30,216,sat/sun
