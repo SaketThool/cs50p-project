@@ -10,16 +10,16 @@ def choose_dep_station(departure_stations):  # This part is for choice of the de
     #         print("Invalid Station code")
 
     # return chosen_dep_station
-    
-    #TODO To include full station name
+    departure_stations_sorted = sorted(departure_stations)
     # This function help to give the chosen index in departure_station_sorted
-    chosen_index = survey.routines.select("Enter the DEPARTURE STATION: ", options = departure_stations)
-    return departure_stations[chosen_index] # In this we get the actual station code
+    chosen_index = survey.routines.select("Enter the DEPARTURE STATION: ", options = departure_stations_sorted)
+    return departure_stations_sorted[chosen_index] # In this we get the actual station code
 
 def choose_arri_station(arrival_stations):   # this part is for choice of the arrival station
     
-    chosen_index = survey.routines.select("Enter the ARRIVAL STATION: ", options = arrival_stations)
-    return arrival_stations[chosen_index]
+    arrival_stations_sorted = sorted(arrival_stations)
+    chosen_index = survey.routines.select("Enter the ARRIVAL STATION: ", options = arrival_stations_sorted)
+    return arrival_stations_sorted[chosen_index]
 
 def choose_date(): # part is for input the date
 

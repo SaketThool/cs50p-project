@@ -35,24 +35,23 @@ train_No,train_Name,dep_station,arri_station,dep_time,arri_time,total_seats,days
 12870,Mumbai CSMT - Howrah Weekly SF Express (PT),G,TNA,12:00,03:08,72,thu
 19567,Tuticorin - Okha Vivek Express (PT),TNA,G,05:05,07:42,144,tue
 19568,Tuticorin - Okha Vivek Express (PT),G,TNA,05:05,07:42,144,fri
-22358,Gaya - Mumbai LTT Weekly SF Express (PT),NGP,KYL,15:00,04:42,216,thu
-22359,Gaya - Mumbai LTT Weekly SF Express (PT),KYL,NGP,15:00,04:42,216,mon
-20822,Santragachi - Pune Humsafar Express,NGP,KYL,11:25,22:37,144,sun
-20823,Santragachi - Pune Humsafar Express,KLY,NGP,11:25,22:37,144,sat
-01151,Mumbai CSMT - Karmali Special Fare Summer Special,CSMT,KLY,00:20,13:30,72,thu
-01152,Mumbai CSMT - Karmali Special Fare Summer Special,KYL,CSMT,00:20,13:30,72,mon
-98707,Mumbai CSMT - Goregaon Slow Local,CSMT,KLY,05:26,06:20,144,sun/mon/tue/wed/thu/fri/sat
-98708,Mumbai CSMT - Goregaon Slow Local,KLY,CSMT,05:26,06:20,144,sun/mon/tue/wed/thu/fri/sat
-01026,Ballia - Dadar Central Special Fare Special,PUNE,KLY,15:15,08:35,216,sun/wed/fri
-01027,Ballia - Dadar Central Special Fare Special,KYL,PUNE,15:15,08:35,216,mon/tue/thu
-01014,SMVT Bengaluru - Mumbai CSMT Special Fare Summer Special,PUNE,KLY,04:40,07:05,144,sun
-01015,SMVT Bengaluru - Mumbai CSMT Special Fare Summer Special,KLY,PUNE,04:40,07:05,144,sat
-01029,Mumbai LTT - Chhapra AC Special Fare Summer Special,TNA,KLY,16:37,18:35,72,sun
-01030,Mumbai LTT - Chhapra AC Special Fare Summer Special,KLY,TNA,16:37,18:35,72,sat
-01105,Mumbai LTT - Hazur Sahib Nanded Special Fare Summer Special,TNA,KLY,13:40,16:10,144,wed
-01106,Mumbai LTT - Hazur Sahib Nanded Special Fare Summer Special,KLY,TNA,13:40,16:10,144,thu
-22357,Mumbai LTT - Gaya Weekly SF Express,KLY,G,13:55,03:00,216,fri
-22358,Mumbai LTT - Gaya Weekly SF Express,G,KLY,13:55,03:00,216,tue
-22848,Mumbai LTT - Visakhapatnam SF Express (via Nagpur) (PT),KLY,G,01:00,15:13,144,tue
-22849,Mumbai LTT - Visakhapatnam SF Express (via Nagpur) (PT),G,KLY,01:00,15:13,144,fri
-,,,,,,,
+22358,Gaya - Mumbai LTT Weekly SF Express (PT),NGP,KYN,15:00,04:42,216,thu
+22359,Gaya - Mumbai LTT Weekly SF Express (PT),KYN,NGP,15:00,04:42,216,mon
+20822,Santragachi - Pune Humsafar Express,NGP,KYN,11:25,22:37,144,sun
+20823,Santragachi - Pune Humsafar Express,KYN,NGP,11:25,22:37,144,sat
+01151,Mumbai CSMT - Karmali Special Fare Summer Special,CSMT,KYN,00:20,13:30,72,thu
+01152,Mumbai CSMT - Karmali Special Fare Summer Special,KYN,CSMT,00:20,13:30,72,mon
+98707,Mumbai CSMT - Goregaon Slow Local,CSMT,KYN,05:26,06:20,144,sun/mon/tue/wed/thu/fri/sat
+98708,Mumbai CSMT - Goregaon Slow Local,KYN,CSMT,05:26,06:20,144,sun/mon/tue/wed/thu/fri/sat
+01026,Ballia - Dadar Central Special Fare Special,PUNE,KYN,15:15,08:35,216,sun/wed/fri
+01027,Ballia - Dadar Central Special Fare Special,KYN,PUNE,15:15,08:35,216,mon/tue/thu
+01014,SMVT Bengaluru - Mumbai CSMT Special Fare Summer Special,PUNE,KYN,04:40,07:05,144,sun
+01015,SMVT Bengaluru - Mumbai CSMT Special Fare Summer Special,KYN,PUNE,04:40,07:05,144,sat
+01029,Mumbai LTT - Chhapra AC Special Fare Summer Special,TNA,KYN,16:37,18:35,72,sun
+01030,Mumbai LTT - Chhapra AC Special Fare Summer Special,KYN,TNA,16:37,18:35,72,sat
+01105,Mumbai LTT - Hazur Sahib Nanded Special Fare Summer Special,TNA,KYN,13:40,16:10,144,wed
+01106,Mumbai LTT - Hazur Sahib Nanded Special Fare Summer Special,KYN,TNA,13:40,16:10,144,thu
+22357,Mumbai LTT - Gaya Weekly SF Express,KYN,G,13:55,03:00,216,fri
+22358,Mumbai LTT - Gaya Weekly SF Express,G,KYN,13:55,03:00,216,tue
+22848,Mumbai LTT - Visakhapatnam SF Express (via Nagpur) (PT),KYN,G,01:00,15:13,144,tue
+22849,Mumbai LTT - Visakhapatnam SF Express (via Nagpur) (PT),G,KYN,01:00,15:13,144,fri

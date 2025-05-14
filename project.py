@@ -105,7 +105,7 @@ def book_a_train(con):  # this function help to book the ticket
         departure_stations = all_departure_stations(routes)
         chosen_dep_station = choose_dep_station(departure_stations)
 
-        arrival_stations = all_arrival_stations(routes)
+        arrival_stations = all_arrival_stations(routes,chosen_dep_station)
         chosen_arri_station = choose_arri_station(arrival_stations)
 
         chosen_date = choose_date()
