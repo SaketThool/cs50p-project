@@ -9,5 +9,5 @@ class Booking:
         self.phone_number = phone_number
 
     # This help to call the object when class is created
-    def __str__(self):  
+    def __str__(self):
         return f"Your Booking is: {self.route} | Date: {self.date} | Name: {self.name} Age: {self.age} | Gender: {self.gender} | Phone Number: {self.phone_number}"
