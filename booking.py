@@ -8,5 +8,6 @@ class Booking:
         self.gender = gender
         self.phone_number = phone_number
 
-    def __str__(self):  # This help to call the object when class is created
+    # This help to call the object when class is created
+    def __str__(self):  
         return f"Your Booking is: {self.route} | Date: {self.date} | Name: {self.name} Age: {self.age} | Gender: {self.gender} | Phone Number: {self.phone_number}"

@@ -13,9 +13,10 @@ def db_setup():
 
     # In this it connects with the sqlite3 database which connect to the database file which is been present in the file or need to be created in the file
     con = sqlite3.connect("train.db")
+    # cur is the cursor which help to read and write in the data base
     cur = (
         con.cursor()
-    )  # cur is the cursor which help to read and write in the data base
+    )  
 
     setup_station_table(cur)
     setup_routes_table(cur)
@@ -28,9 +29,10 @@ def get_all_routes(con):
 
     cur = con.cursor()
 
+    # In this we get all the rows and columns from the route table.'*' means all columns.
     rows = cur.execute(
         "SELECT * FROM routes"
-    ).fetchall()  # In this we get all the rows and columns from the route table.'*' means all columns.
+    ).fetchall()  
 
     # To make code easier to understand and get details easily
     # Instead of returning this rows = [[1, "34343", "duronto","NGP", "CSMT", ....], [2, "34343",  "pro"]]
@@ -49,18 +51,20 @@ def get_all_stations(con):
 
     cur = con.cursor()
 
+    # In this we get all the rows and columns from the route table.'*' means all columns.
     rows = cur.execute(
         "SELECT * FROM stations"
-    ).fetchall()  # In this we get all the rows and columns from the route table.'*' means all columns.
+    ).fetchall()  
 
     stations = {}  
     for row in rows:
        stations[row[0]] = row[1]
     return stations
 
+# This function help to save the booking details of the user which is been input and give back PNR
 def save_booking(
     con, booking
-):  # This function help to save the booking details of the user which is been input and give back PNR
+):  
     cur = con.cursor()
 
     cur.execute(
@@ -76,11 +80,11 @@ def save_booking(
     )
     cur.connection.commit()
 
+    # The primary key of the table is PNR which is automatically created
+    # The gives the last newly created primary key(PNR)
     return (
         cur.lastrowid
-    )  # The primary key of the table is PNR which is automatically created
-    # The gives the last newly created primary key(PNR)
-
+    )  
 
 # It tells us that how many booking are there for the specific route and specific date that day
 def number_bookings_for_train_route_and_date(con, route, date):
@@ -94,25 +98,28 @@ def number_bookings_for_train_route_and_date(con, route, date):
     ).fetchone()[0]
     return number_of_booking
 
-
+# This function help to get the booking information for the chosen PNR that has been stored in booking table
 def get_booking(
     con, pnr
-):  # This function help to get the booking information for the chosen PNR that has been stored in booking table
+):  
     cur = con.cursor()
 
     # In this we get all column and we get only 1 row that has the PNR
     row = cur.execute("SELECT * FROM bookings WHERE pnr = ? ", (pnr,)).fetchone()
-    if row:  # If we find a booking with given PNR it will continue
-        route = get_route(con, row[1])  # row[1] is a route_id
+    # If we find a booking with given PNR it will continue
+    if row:
+        # row[1] is a route_id  
+        route = get_route(con, row[1])  
         if not route:
             return None
 
         # It convert the database row to booking object
+        # row[2] is a string(yyyy-mm-dd) convert into the python date object
         booking = Booking(
             route,
             date.fromisoformat(
                 row[2]
-            ),  # row[2] is a string(yyyy-mm-dd) convert into the python date object
+            ),  
             row[3],
             row[4],
             row[5],
@@ -121,11 +128,12 @@ def get_booking(
 
         return booking
 
-    else:  # No booking with the PNR found
+    # No booking with the PNR found
+    else:  
         return None
 
-
-def get_route(con, route_id):  # It help to get the train detail for route with route id
+# It help to get the train detail for route with route id
+def get_route(con, route_id):  
 
     cur = con.cursor()
 
@@ -140,20 +148,21 @@ def get_route(con, route_id):  # It help to get the train detail for route with 
     else:
         return None
 
-
+# This function use to store the station name and station code in the table
 def setup_station_table(
     cur,
-):  # This function use to store the station name and station code in the table
-
+):  
     cur.execute("CREATE TABLE IF NOT EXISTS stations(code TEXT PRIMARY KEY, name TEXT)")
     # This counts the number of row in the table. Fetchone gives one row instead of list of rows
     no_of_stations = cur.execute("SELECT COUNT(*) FROM stations").fetchone()[0]
     if no_of_stations == 0:
         try:
+            # This line opens the file object
             with open(
                 "train_stations.csv", "r"
-            ) as csvfile:  # This line opens the file object
-                reader = csv.DictReader(csvfile)  # The file object open as a csvfile
+            ) as csvfile: 
+                # The file object open as a csvfile 
+                reader = csv.DictReader(csvfile)  
 
                 # In this every csvrow will be converted into database table row
                 for row in reader:
@@ -161,18 +170,20 @@ def setup_station_table(
                         "INSERT INTO stations (code, name) VALUES(?, ?)",
                         (row["station_Code"], row["station_Name"]),
                     )
-                cur.connection.commit()  # This will run all the above sql in one run to make it faster
+                # This will run all the above sql in one run to make it faster
+                cur.connection.commit()  
         except FileNotFoundError:
             sys.exit("File does not exist")
 
+# This function use to store the train route details in the table
 
 def setup_routes_table(
     cur,
-):  # This function use to store the train route details in the table
-
+):  
+    # Autoincrement automatically add id for new row
     cur.execute(
         "CREATE TABLE IF NOT EXISTS routes(id INTEGER PRIMARY KEY AUTOINCREMENT , number NUMBER , name TEXT , dep_station TEXT , arri_station TEXT , dep_time TEXT , arri_time TEXT , total_seats NUMBER , days_running TEXT )"
-    )  # Autoincrement automatically add id for new row
+    )  
     no_of_stations = cur.execute("SELECT COUNT(*) FROM routes").fetchone()[0]
     if no_of_stations == 0:
         try:
@@ -197,11 +208,12 @@ def setup_routes_table(
         except FileNotFoundError:
             sys.exit("File does not exist")
 
-
+# This function use to store the booking detail of the user in the table
 def setup_booking_table(
     cur,
-):  # This function use to store the booking detail of the user in the table
+):  
 
+     # route_id belongs to another table called route and route_id points to one row in the route table
     cur.execute(
         "CREATE TABLE IF NOT EXISTS bookings(pnr INTEGER PRIMARY KEY AUTOINCREMENT, route_id INTEGER, date TEXT, name TEXT, age INTEGER, gender TEXT, phone_number TEXT, FOREIGN KEY (route_id) REFERENCES routes(id))"
-    )  # route_id belongs to another table called route and route_id points to one row in the route table
+    ) 

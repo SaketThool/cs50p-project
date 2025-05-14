@@ -22,14 +22,15 @@ def choose_dep_station(
     chosen_index = survey.routines.select(
         "Enter the DEPARTURE STATION: ", options=station_to_display
     )
+    # In this we get the actual station code
     return departure_stations_sorted[
         chosen_index
-    ]  # In this we get the actual station code
+    ]  
 
-
+# this part is for choice of the arrival station
 def choose_arri_station(
     arrival_stations, full_stations
-):  # this part is for choice of the arrival station
+):  
 
     arrival_stations_sorted = sorted(arrival_stations)
     station_to_display = []
@@ -41,18 +42,18 @@ def choose_arri_station(
     )
     return arrival_stations_sorted[chosen_index]
 
-
-def choose_date():  # part is for input the date
+# part is for input the date
+def choose_date():  
 
     chosen_datetime = survey.routines.datetime(
         "Enter your DATE for journey(YYYY-MM-DD): ", attrs=("year", "month", "day")
     )
     return chosen_datetime.date()
 
-
+# This part is for the choice of selecting the train with its information
 def choose_route(
     available_routes,
-):  # This part is for the choice of selecting the train with its information
+):  
     while True:
         try:
             chosen_route_number = int(input("Enter ROW number to book your train: "))
@@ -65,8 +66,8 @@ def choose_route(
     chosen_route = available_routes[chosen_route_number]
     return chosen_route
 
-
-def choose_name():  # This part is for input of the name of the user
+ # This part is for input of the name of the user
+def choose_name(): 
     while True:
         try:
             passenger_name = input("Enter your NAME: ").strip()
@@ -78,8 +79,8 @@ def choose_name():  # This part is for input of the name of the user
             continue
     return passenger_name
 
-
-def choose_age():  # This part is for input of the age of the user
+ # This part is for input of the age of the user
+def choose_age(): 
     while True:
         try:
             passenger_age = int(input("Enter your AGE: "))
@@ -92,8 +93,8 @@ def choose_age():  # This part is for input of the age of the user
             continue
     return passenger_age
 
-
-def choose_gender():  # This part is for the input of the gender of the user
+# This part is for the input of the gender of the user
+def choose_gender():  
     while True:
         try:
             passenger_gender = input("Enter your GENDER[M/F/O]: ").strip()
@@ -105,8 +106,8 @@ def choose_gender():  # This part is for the input of the gender of the user
             continue
     return passenger_gender
 
-
-def choose_phone_number():  # This part is for the input of the Phone Number of the User
+# This part is for the input of the Phone Number of the User
+def choose_phone_number(): 
     while True:
         try:
             passenger_phone_number = input(
@@ -120,8 +121,8 @@ def choose_phone_number():  # This part is for the input of the Phone Number of 
             continue
     return passenger_phone_number
 
-
-def choose_pnr():  # In this you will enter your PNR number which you will get after our booking
+# In this you will enter your PNR number which you will get after our booking
+def choose_pnr():  
     while True:
         try:
             chosen_pnr = int(input("Enter your PNR Number: "))
